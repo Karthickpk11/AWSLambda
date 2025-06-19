@@ -1,5 +1,5 @@
 # AWSLambda
-Lambda is Amazon’s FaaS platform
+Build and Deploy Serverless Applications with Java
 
 **Functions as a Service**
 FaaS is a new way of building and deploying server-side software, oriented around deploying individual functions or operations.
@@ -38,9 +38,20 @@ _Web API using AWS Lambda_
 An API Gateway, to provide the HTTP protocol and routing logic that we typically have within a web service.  
 ![image](https://github.com/user-attachments/assets/abf687ea-064b-4dd6-ab10-c3fb8c5b46b6)  
   The above diagram shows a typical API as used by a single-page web app or by a mobile application. The user’s client makes various calls, via HTTP, to the backend to retrieve data and/or initiate requests. In our case, the component that handles the HTTP aspects of the request is Amazon API Gateway—it is an HTTP server.  
+  
   We configure API Gateway with a mapping from request to handler (e.g., if a client makes a request to GET _/restaurants/123_, then we can set up API Gateway to call a Lambda function named RestaurantsFunction, passing the details of the request). API Gateway will invoke the Lambda function synchronously and will wait for the function to evaluate the request and return a response.  
+  
   Since the Lambda function instance isn’t itself a remotely callable API, the API Gateway actually makes a call to the Lambda platform, specifying the Lambda function to invoke, the type of invocation (RequestResponse), and the request parameters. The Lambda platform then instantiates an instance of RestaurantsFunction and invokes that with the request parameters.  
+  
   The Lambda platform does have a few limitations, like the maximum timeout we’ve already mentioned, but apart from that, it’s pretty much a standard Linux environment. In RestaurantsFunction we can, for example, make a call to a database—Amazon’s DynamoDB is a popular database to use with Lambda, partly due to the similar scaling capabilities of the two services.
+  
   Once the function has finished its work, it returns a response, since it was called in a synchronous fashion. This response is passed by the Lambda platform back to API Gateway, which transforms the response into an HTTP response message, which is itself passed back to the client.  
+  
   Typically a web API will satisfy multiple types of requests, mapped to different HTTP paths and verbs (like GET, PUT, POST, etc.). When developing a Lambda-backed web API, you will usually implement different types of requests as different Lambda functions, although you are not forced to use such a design—you can handle all requests as one function if you’d like and switch logic inside the function based on the original HTTP request path and verb.
+
+_File processing with Lambda_  
+A common use case for Lambda is file processing. Let’s imagine a mobile application that can upload photos to a remote server, which we then want to make available to other parts of our product suite, but at different image sizes.  
+![image](https://github.com/user-attachments/assets/7c7eed88-a2d6-411e-bb88-d9310afc1f90)
+
+
 
