@@ -1,5 +1,5 @@
 # AWSLambda
-Build and Deploy Serverless Applications with Java
+Build and Deploy Serverless Applications with Java, Basic understanding of Lambda use with AWS.
 
 **Functions as a Service**
 FaaS is a new way of building and deploying server-side software, oriented around deploying individual functions or operations.
@@ -52,6 +52,7 @@ An API Gateway, to provide the HTTP protocol and routing logic that we typically
 _File processing with Lambda_  
 A common use case for Lambda is file processing. Let’s imagine a mobile application that can upload photos to a remote server, which we then want to make available to other parts of our product suite, but at different image sizes.  
 ![image](https://github.com/user-attachments/assets/7c7eed88-a2d6-411e-bb88-d9310afc1f90)
+Mobile applications can upload files to S3 via the AWS API, in a secure fashion. S3 is Amazon’s Simple Storage Service.
 
 
 
