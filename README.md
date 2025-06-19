@@ -21,7 +21,27 @@ Lambda is tightly integrated with many other AWS services. This corresponds to m
 Lambda is a fully serverless service, as defined by our differentiating criteria from earlier, specifically:  
 _Does not require managing a long-lived host or application instance_  
 _Self auto-scales and auto-provisions, dependent on load_  
-_Has costs that are based on precise usage, up from and down to zero usage _ 
+_Has costs that are based on precise usage, up from and down to zero usage_   
 _Has performance capabilities defined in terms other than host size/count_  
 _Has implicit high availability_  
+
+_Why Lambda?_  
+The key benefit from our perspective is how quickly you can build applications with Lambda when combined with other AWS services. We often hear of companies building brand new applications, deployed to production, in just a day or two. Being able to remove ourselves from so much of the infrastructure-related code we often write in regular applications is a huge time-saver.  
+
+_What Does a Lambda Application Look Like?_  
+Traditional long-running server applications often have at least one of two ways of starting work for a particular stimulus—they either open up a TCP/IP socket and wait for inbound connections or have an internal scheduling mechanism that will cause them to reach out to a remote resource to check for new work. Since Lambda is fundamentally an event-oriented platform and since Lambda enforces a timeout, neither of these patterns is applicable to a Lambda application. So how do we build a Lambda application?  
+The first point to consider is that at the lowest level Lambda functions can be invoked (called) in one of two ways:
+• Lambda functions can be called synchronously—named RequestResponse by AWS. In this scenario, an upstream component calls the Lambda function and waits for whatever response the Lambda function generates.
+• Alternatively, a Lambda function may be invoked asynchronously—named Event by AWS. This time the request from the upstream caller is responded to immediately by the Lambda platform, while the Lambda function proceeds with processing the request. No further response is returned to the caller in this scenario.  
+
+_Web API using AWS Lambda_  
+An API Gateway, to provide the HTTP protocol and routing logic that we typically have within a web service.  
+![image](https://github.com/user-attachments/assets/abf687ea-064b-4dd6-ab10-c3fb8c5b46b6)  
+The above diagram shows a typical API as used by a single-page web app or by a mobile application. The user’s client makes various calls, via HTTP, to the backend to retrieve data and/or initiate requests. In our case, the component that handles the HTTP aspects of the request is Amazon API Gateway—it is an HTTP server.  
+We configure API Gateway with a mapping from request to handler (e.g., if a client makes a request to GET _/restaurants/123_, then we can set up API Gateway to call a Lambda function named RestaurantsFunction, passing the details of the request). API Gateway will invoke the Lambda function synchronously and will wait for the function to evaluate the request and return a response.  
+Since the Lambda function instance isn’t itself a remotely callable API, the API Gateway actually makes a call to the Lambda platform, specifying the Lambda function to invoke, the type of invocation (RequestResponse), and the request parameters. The Lambda platform then instantiates an instance of RestaurantsFunction and invokes that with the request parameters.  
+The Lambda platform does have a few limitations, like the maximum timeout we’ve already mentioned, but apart from that, it’s pretty much a standard Linux environment.  
+In RestaurantsFunction we can, for example, make a call to a database—Amazon’s DynamoDB is a popular database to use with Lambda, partly due to the similar scaling capabilities of the two services.
+Once the function has finished its work, it returns a response, since it was called in a synchronous fashion. This response is passed by the Lambda platform back to API Gateway, which transforms the response into an HTTP response message, which is itself passed back to the client.  
+Typically a web API will satisfy multiple types of requests, mapped to different HTTP paths and verbs (like GET, PUT, POST, etc.). When developing a Lambda-backed web API, you will usually implement different types of requests as different Lambda functions, although you are not forced to use such a design—you can handle all requests as one function if you’d like and switch logic inside the function based on the original HTTP request path and verb.
 
