@@ -19,9 +19,9 @@ Lambda implements the FaaS pattern by instantiating ephemeral, managed, Linux en
 Lambda provides an exceptionally lightweight programming and deployment model —we just provide a function, and associated dependencies, in a ZIP or JAR file, and Lambda fully manages the runtime environment.  
 Lambda is tightly integrated with many other AWS services. This corresponds to many different types of event source that can trigger Lambda functions, and this leads to the ability to build many different types of applications using Lambda.  
 Lambda is a fully serverless service, as defined by our differentiating criteria from earlier, specifically:  
-_Does not require managing a long-lived host or application instance  
-Self auto-scales and auto-provisions, dependent on load  
-Has costs that are based on precise usage, up from and down to zero usage  
-Has performance capabilities defined in terms other than host size/count  
-Has implicit high availability  _
+_Does not require managing a long-lived host or application instance_  
+_Self auto-scales and auto-provisions, dependent on load_  
+_Has costs that are based on precise usage, up from and down to zero usage _ 
+_Has performance capabilities defined in terms other than host size/count_  
+_Has implicit high availability_  
 
